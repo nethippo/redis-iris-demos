@@ -38,6 +38,8 @@ The `legacy/context-engine-demos/` directory contains an archived copy of the or
 
 ## Getting Started
 
+For parallel Sports Desk and Radish Bank containers and the live 3D Data Flow view, see the [Docker guide (한국어)](docker/README.ko.md).
+
 ### Prerequisites
 
 - Python 3.11+

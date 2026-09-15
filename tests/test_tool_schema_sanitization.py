@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import asyncio
 
 import pytest
 from pydantic import ValidationError
@@ -15,6 +16,47 @@ from backend.app.langgraph_agent import (
     _pydantic_model_from_json_schema,
     _resolve_json_schema_variant,
 )
+
+
+def test_mcp_tool_serializes_nested_conditions_without_changing_values() -> None:
+    class RecordingService:
+        arguments = None
+
+        async def call_tool(self, name, arguments):
+            # The actual MCP transport serializes arguments as JSON.
+            self.arguments = json.loads(json.dumps(arguments))
+            return {"bet_id": "BET_001"}
+
+    service = RecordingService()
+    tool = _make_mcp_tool(
+        {
+            "name": "filter_bet",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "limit": {"type": "integer"},
+                    "tag_conditions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {"type": "string"},
+                                "values": {"type": "array", "items": {"type": "string"}},
+                                "note": {"type": ["string", "null"]},
+                            },
+                            "required": ["field", "values", "note"],
+                        },
+                    },
+                },
+                "required": ["tag_conditions"],
+            },
+        },
+        cs_service=service,
+    )
+    conditions = [{"field": "player_id", "values": ["PLY_DEMO_001"], "note": None}]
+    result = asyncio.run(tool.ainvoke({"tag_conditions": conditions, "limit": None}))
+    assert json.loads(result) == {"bet_id": "BET_001"}
+    assert service.arguments == {"tag_conditions": conditions}
 
 
 def test_sanitize_property_schema_preserves_generic_array_semantics() -> None:

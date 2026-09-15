@@ -17,6 +17,7 @@ import {
   extractEntity,
 } from "../utils";
 import { FlowStrip } from "./FlowStrip";
+import { ArchitectureView } from "./ArchitectureView";
 
 type DomainEvent = {
   stream_id: string;
@@ -713,7 +714,8 @@ export function ActivityPanel({
 }: ActivityPanelProps) {
   const hasMessages = allMessages.length > 0;
   const isRag = mode === "simple_rag";
-  const showOverview = !hasMessages && !isRag;
+  const showArchitecture = contextView === "architecture" && !isRag;
+  const showOverview = !hasMessages && !isRag && !showArchitecture;
 
   function handleSwitchToContext() {
     onLoadContext();
@@ -721,7 +723,7 @@ export function ActivityPanel({
   }
 
   return (
-    <aside className={`activity-panel ${isOpen ? "open" : ""}`}>
+    <aside className={`activity-panel ${isOpen ? "open" : ""} ${showArchitecture ? "activity-panel--architecture" : ""}`}>
       <div className="activity-panel-header">
         <div className="activity-panel-title">
           <img src="/RedisLogo.png" alt="" className="panel-title-logo" />
@@ -743,7 +745,7 @@ export function ActivityPanel({
         </button>
       </div>
 
-      {hasMessages && !isRag && (
+      {!isRag && (
         <div className="panel-tab-bar">
           <button
             className={`panel-tab ${contextView === "activity" ? "active" : ""}`}
@@ -759,13 +761,23 @@ export function ActivityPanel({
           >
             All Context
           </button>
+          <button
+            className={`panel-tab ${showArchitecture ? "active" : ""}`}
+            onClick={() => onContextViewChange("architecture")}
+            type="button"
+            aria-pressed={showArchitecture}
+          >
+            Data Flow
+          </button>
         </div>
       )}
 
       {showOverview && <FlowStrip />}
 
       <div className="activity-panel-body">
-        {showOverview ? (
+        {showArchitecture ? (
+          isOpen && <ArchitectureView messages={allMessages} isStreaming={isStreaming} domain={domain} />
+        ) : showOverview ? (
           <RedisContextContent
             memoryData={memoryData}
             memoryLoading={memoryLoading}

@@ -68,6 +68,7 @@ class Settings(BaseSettings):
     langcache_cache_id: str = Field(default="")
     langcache_api_key: str = Field(default="")
     langcache_threshold: float = Field(default=0.82)
+    langcache_namespace: str = Field(default="")
 
     backend_host: str = Field(default="127.0.0.1")
     backend_port: int = Field(default=8040)

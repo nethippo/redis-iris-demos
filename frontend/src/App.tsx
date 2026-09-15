@@ -9,6 +9,7 @@ import type {
   ToolDefinition,
 } from "./types";
 import { apiUrl, modeStorageKey } from "./utils";
+import { architectureEvent } from "./architecture";
 
 import { EmptyState } from "./components/EmptyState";
 import { ConversationView } from "./components/ConversationView";
@@ -117,7 +118,7 @@ export default function App() {
     }
     if (latest && latest.toolEvents.length > 0) {
       setActivityPanelOpen(true);
-      setContextView("activity");
+      setContextView(view => view === "architecture" ? view : "activity");
       autoOpenedRef.current = true;
     }
   }, [messages]);
@@ -174,6 +175,7 @@ export default function App() {
 
   function handleModeChange(newMode: AgentMode) {
     setMode(newMode);
+    setContextView("activity");
     setMessages([]);
     setThreadId(crypto.randomUUID());
     setActivityPanelOpen(false);
@@ -192,7 +194,11 @@ export default function App() {
       content: trimmed,
     };
     const assistantId = `assistant-${Date.now()}`;
-    const assistantMsg: ChatMessage = { ...emptyMsg(), id: assistantId };
+    const requestStartedAt = performance.now();
+    const assistantMsg: ChatMessage = {
+      ...emptyMsg(), id: assistantId, requestStartedAt,
+      architectureEvents: [{ id: "request", from: "browser", to: "api", label: "Chat request · via Nginx", phase: "start", ts: 0 }],
+    };
     const nextMessages = [...messages, userMsg];
     setMessages([...nextMessages, assistantMsg]);
     setInput("");
@@ -209,10 +215,7 @@ export default function App() {
         }),
       });
 
-      if (!response.body) {
-        setIsLoading(false);
-        return;
-      }
+      if (!response.ok || !response.body) throw new Error("Chat request failed");
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
@@ -230,7 +233,14 @@ export default function App() {
           setMessages((cur) =>
             cur.map((m) => {
               if (m.id !== assistantId) return m;
+              const trace = architectureEvent(ev, m.architectureEvents ?? []);
+              if (trace) m = { ...m, architectureEvents: [...(m.architectureEvents ?? []), trace] };
               switch (ev.type) {
+                case "architecture-event":
+                  return m;
+                case "done":
+                  return { ...m, requestFinished: true, requestElapsedMs: ev.totalElapsedMs,
+                    architectureEvents: [...(m.architectureEvents ?? []), { id: "request", from: "browser", to: "api", label: "Chat request · via Nginx", phase: m.requestFailed ? "error" : "end", ts: ev.totalElapsedMs ?? performance.now() - requestStartedAt, outcome: ev.cacheHit ? "Cache hit" : ev.guardrailBlocked ? "Blocked" : undefined }] };
                 case "status":
                   return {
                     ...m,
@@ -287,9 +297,9 @@ export default function App() {
                   if (import.meta.env.DEV) {
                     console.error(`[OpenAI Error] ${ev.errorType}: ${ev.message}`);
                   }
-                  return m;
+                  return { ...m, requestFailed: true };
                 case "text-delta":
-                  return { ...m, content: m.content + (ev.delta ?? "") };
+                  return { ...m, content: m.content + (ev.delta ?? ""), architectureEvents: m.content ? m.architectureEvents : [...(m.architectureEvents ?? []), { id: "response", from: "api", to: "browser", label: "First response bytes · SSE", phase: "end", ts: ev.ts ?? performance.now() - requestStartedAt }] };
                 default:
                   return m;
               }
@@ -301,11 +311,15 @@ export default function App() {
       setMessages((cur) =>
         cur.map((m) =>
           m.id === assistantId
-            ? { ...m, content: m.content || "Connection error. Please try again." }
+            ? { ...m, requestFailed: true, content: m.content || "Connection error. Please try again." }
             : m
         )
       );
     }
+    setMessages(cur => cur.map(m => m.id !== assistantId || m.requestFinished ? m : {
+      ...m, requestFinished: true, requestFailed: true, requestElapsedMs: performance.now() - requestStartedAt,
+      architectureEvents: [...(m.architectureEvents ?? []), { id: "request", from: "browser", to: "api", label: "Chat stream interrupted", phase: "error", ts: performance.now() - requestStartedAt }],
+    }));
     setIsLoading(false);
   }
 
@@ -339,7 +353,7 @@ export default function App() {
   }
 
   return (
-    <div className={`shell ${activityPanelOpen ? "panel-open" : ""} ${!hasMessages ? "shell--landing" : ""}`}>
+    <div className={`shell ${activityPanelOpen ? "panel-open" : ""} ${contextView === "architecture" ? "shell--architecture" : ""} ${!hasMessages ? "shell--landing" : ""}`}>
       <header className="topbar">
         <div className="topbar-brand" onClick={handleGoHome} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleGoHome(); }} role="button" tabIndex={0} style={{ cursor: "pointer" }}>
           {domain?.logo_src && <img src={domain.logo_src} alt="" className="topbar-brand-logo" />}

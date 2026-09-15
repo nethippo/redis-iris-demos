@@ -50,6 +50,38 @@ def _use_fake_agent(monkeypatch, agent) -> None:
     monkeypatch.setattr(main_mod, "get_agent", fake_get_agent)
 
 
+def test_architecture_reports_llm_boundaries_without_model_payloads(monkeypatch):
+    class FakeAgent:
+        async def astream_events(self, *_args, **_kwargs):
+            yield {"event": "on_chat_model_start", "run_id": "llm-one", "data": {"input": "private prompt"}}
+            yield {"event": "on_chat_model_end", "run_id": "llm-one", "data": {"output": "private answer"}}
+
+    _disable_preamble(monkeypatch)
+    monkeypatch.setattr(main_mod.settings, "show_llm_trace_steps", False)
+    _use_fake_agent(monkeypatch, FakeAgent())
+    events = asyncio.run(_collect_chat_events(_chat_request()))
+    trace = [e for e in events if e["type"] == "architecture-event"]
+    assert [e["phase"] for e in trace] == ["start", "end"]
+    assert all(e["id"] == "llm-one" and e["from"] == "agent" and e["to"] == "openai" for e in trace)
+    assert trace[-1]["durationMs"] >= 1
+    assert "private" not in json.dumps(trace)
+
+
+def test_architecture_embedding_failure_ends_stream_without_success(monkeypatch):
+    async def fail(_text):
+        raise RuntimeError("private upstream error")
+
+    _disable_preamble(monkeypatch)
+    monkeypatch.setattr(main_mod.guardrail_service, "is_configured", lambda: True)
+    monkeypatch.setattr(main_mod.guardrail_service, "embed", fail)
+    events = asyncio.run(_collect_chat_events(_chat_request()))
+    trace = [e for e in events if e["type"] == "architecture-event"]
+    assert [e["phase"] for e in trace] == ["start", "error"]
+    assert events[-1]["type"] == "done"
+    assert any(e["type"] == "error" for e in events)
+    assert "private upstream error" not in json.dumps(events)
+
+
 def test_cs_event_stream_emits_terminal_tool_result_on_tool_error(monkeypatch):
     class FakeAgent:
         async def astream_events(self, *_args, **_kwargs):

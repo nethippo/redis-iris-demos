@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+**/node_modules
+**/.venv
+**/__pycache__
+frontend/dist
+output
+.codex
+.claude
+*.log

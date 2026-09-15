@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 import httpx
@@ -16,6 +17,8 @@ class LangCacheService:
         self._cache_id = settings.langcache_cache_id or ""
         self._api_key = settings.langcache_api_key or ""
         self._threshold = settings.langcache_threshold
+        self._prefix = f"[{settings.langcache_namespace}] " if settings.langcache_namespace else ""
+        self._domain = settings.demo_domain
         self._client: httpx.AsyncClient | None = None
 
     def is_configured(self) -> bool:
@@ -38,13 +41,22 @@ class LangCacheService:
     async def search(self, prompt: str) -> dict[str, Any] | None:
         if not self.is_configured():
             return None
+        if self._domain == "radish-bank":
+            # Only public FD-rate FAQs are seeded. Account state, actions and
+            # personal questions must reach live tools, irrespective of similarity.
+            if (
+                not re.search(r"\b(fixed deposits?|fd|fd6|fd12)\b", prompt, re.I)
+                or not re.search(r"\b(rates?|interest)\b", prompt, re.I)
+                or re.search(r"\b(my|mine|me|i|our|balance|balances|holdings?|cust\d+|acc\d+|place|open|buy|transfer|withdraw)\b", prompt, re.I)
+            ):
+                return None
         client = await self._get_client()
         try:
             resp = await client.post(
                 f"{self._base_url()}/entries/search",
                 headers=self._headers(),
                 json={
-                    "prompt": prompt,
+                    "prompt": self._prefix + prompt,
                     "similarityThreshold": self._threshold,
                     "searchStrategies": ["semantic"],
                 },
@@ -52,6 +64,10 @@ class LangCacheService:
             resp.raise_for_status()
             data = resp.json()
             entries = data.get("data", [])
+            # A shared cache may have no attribute schema. Never accept a match
+            # from another domain, even when the semantic score is high.
+            if self._prefix:
+                entries = [e for e in entries if e.get("prompt", "").startswith(self._prefix)]
             if entries:
                 best = entries[0]
                 log.info(
@@ -63,7 +79,7 @@ class LangCacheService:
                     "hit": True,
                     "similarity": best.get("similarity", 0),
                     "response": best.get("response", ""),
-                    "prompt": best.get("prompt", ""),
+                    "prompt": best.get("prompt", "").removeprefix(self._prefix),
                 }
             log.info("Cache MISS: %s", prompt[:60])
             return None
@@ -75,7 +91,7 @@ class LangCacheService:
         if not self.is_configured():
             return False
         client = await self._get_client()
-        body: dict[str, Any] = {"prompt": prompt, "response": response}
+        body: dict[str, Any] = {"prompt": self._prefix + prompt, "response": response}
         if attributes:
             body["attributes"] = attributes
         try:

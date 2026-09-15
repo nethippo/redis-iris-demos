@@ -1,5 +1,7 @@
 # Environment & secrets
 .env
+.env.*
+!.env.example
 env.cloud-run.yaml
 
 # AI assistant config (local only)
@@ -48,3 +50,7 @@ psportal-setup/
 
 # Vercel deployment
 .vercel
+
+# Local deployment reports
+/DOCKER_GUIDE.ko.md
+/RADISH_DOCKER_GUIDE.ko.md

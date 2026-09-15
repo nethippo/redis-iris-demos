@@ -1,0 +1,44 @@
+name: iris-radish-bank
+services:
+  backend:
+    build:
+      context: .
+      args:
+        DEMO_DOMAIN: radish-bank
+    image: iris-radish-bank-backend:local
+    restart: unless-stopped
+    env_file: .env.radish
+    volumes:
+      - ./output/radish-bank:/app/output/radish-bank
+    ports:
+      - "127.0.0.1:8041:8040"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8040/api/health', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 120s
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: iris-radish-bank-frontend:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3041:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+  setup:
+    profiles: ["setup"]
+    image: iris-radish-bank-backend:local
+    env_file: .env.radish
+    volumes:
+      - ./.env.radish:/app/.env
+      - ./output/radish-bank:/app/output/radish-bank
+    command: ["python", "scripts/docker_setup.py"]

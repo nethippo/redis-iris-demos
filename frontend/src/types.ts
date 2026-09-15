@@ -36,6 +36,23 @@ export type ChatMessage = {
   statusMessages: StatusMessage[];
   thinkingSteps: ThinkingStep[];
   toolEvents: ToolEvent[];
+  architectureEvents?: ArchitectureEvent[];
+  requestStartedAt?: number;
+  requestFinished?: boolean;
+  requestFailed?: boolean;
+  requestElapsedMs?: number;
+};
+
+export type ArchitectureNodeId = "browser" | "proxy" | "api" | "agent" | "router" | "cache" | "memory" | "retriever" | "redis" | "openai" | "rdi" | "source";
+export type ArchitectureEvent = {
+  id: string;
+  from: ArchitectureNodeId;
+  to: ArchitectureNodeId;
+  label: string;
+  phase: "start" | "end" | "error";
+  ts: number;
+  durationMs?: number;
+  outcome?: string;
 };
 
 export type HealthState = {
@@ -96,4 +113,4 @@ export type ToolsResponse = {
   count: number;
 };
 
-export type RedisContextView = "activity" | "redis-context";
+export type RedisContextView = "activity" | "redis-context" | "architecture";

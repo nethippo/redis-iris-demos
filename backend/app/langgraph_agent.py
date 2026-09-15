@@ -26,6 +26,7 @@ from backend.app.context_surface_service import ContextSurfaceService
 from backend.app.core.domain_loader import get_active_domain
 from backend.app.internal_tools import InternalToolService, domain_runtime_config
 from backend.app.redis_connection import build_redis_url
+from backend.app.redis_trace import TracedRedisSaver
 from backend.app.settings import Settings
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
@@ -348,8 +349,11 @@ def _make_mcp_tool(
     args_model = _pydantic_model_from_json_schema(name, input_schema)
 
     async def fn(**kwargs: Any) -> str:
+        # LangChain parses nested objects into Pydantic models; the MCP transport
+        # needs JSON values. Preserve nested nulls and omit unprovided fields.
+        json_args = args_model(**kwargs).model_dump(mode="json", exclude_unset=True)
         # Strip None values — MCP server rejects null for optional numeric params
-        clean_args = {k: v for k, v in kwargs.items() if v is not None}
+        clean_args = {k: v for k, v in json_args.items() if v is not None}
         # Strip Redis key prefixes the LLM sometimes adds (e.g. "reddash_order:ORD_001" → "ORD_001")
         for k, v in clean_args.items():
             if isinstance(v, str) and (m := _REDIS_KEY_PREFIX_RE.search(v)):
@@ -400,7 +404,7 @@ async def create_checkpointer(settings: Settings) -> AsyncRedisSaver:
 
     redis_url = build_redis_url(settings)
     domain = get_active_domain(settings)
-    checkpointer = AsyncRedisSaver(
+    checkpointer = TracedRedisSaver(
         redis_url=redis_url,
         connection_args=RESILIENT_CONNECTION_KWARGS,
         checkpoint_prefix=domain.manifest.namespace.checkpoint_prefix,

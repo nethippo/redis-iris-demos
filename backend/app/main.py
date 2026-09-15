@@ -5,6 +5,7 @@ import base64
 import json
 import logging
 import os
+from contextlib import aclosing
 from pathlib import Path
 from time import perf_counter
 from typing import Any, AsyncIterator
@@ -24,6 +25,7 @@ from backend.app.langgraph_agent import create_agent, create_checkpointer
 from backend.app.memory_service import MemoryService
 from backend.app.rag_service import SimpleRAGService
 from backend.app.request_context import reset_thread_id, set_thread_id
+from backend.app.redis_trace import stream_with_redis_events
 from backend.app.settings import get_settings
 
 logging.basicConfig(
@@ -147,6 +149,15 @@ class Timer:
 
 def sse(event_type: str, **fields: Any) -> str:
     return f"data: {json.dumps({'type': event_type, **fields})}\n\n"
+
+
+def architecture_event(timer: Timer, operation_id: str, source: str, target: str,
+                       label: str, phase: str, duration_ms: int | None = None) -> str:
+    """Operation boundaries only: never include request content or credentials."""
+    return sse("architecture-event", **{
+        "id": operation_id, "from": source, "to": target, "label": label,
+        "phase": phase, "ts": timer.elapsed_ms(), "durationMs": duration_ms,
+    })
 
 
 def _logo_src(path: Path) -> str:
@@ -413,6 +424,14 @@ async def list_available_tools() -> JSONResponse:
 
 
 async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
+    async with aclosing(stream_with_redis_events(
+        lambda: _cs_event_stream(request), lambda event: sse("architecture-event", **event)
+    )) as stream:
+        async for chunk in stream:
+            yield chunk
+
+
+async def _cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
     timer = Timer()
     phases: list[tuple[str, int]] = []
     thread_id = request.thread_id or "default"
@@ -424,7 +443,15 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
 
     # ── Guardrail: semantic routing check ──
     if guardrail_service.is_configured():
-        guard_vector = await guardrail_service.embed(latest_message.strip())
+        yield architecture_event(timer, "query-embedding", "api", "openai", "Query embedding", "start")
+        try:
+            guard_vector = await guardrail_service.embed(latest_message.strip())
+        except Exception:
+            yield architecture_event(timer, "query-embedding", "api", "openai", "Query embedding", "error")
+            yield sse("error", errorType="EmbeddingError", message="Query embedding failed.", ts=timer.elapsed_ms())
+            yield sse("done", totalElapsedMs=timer.elapsed_ms())
+            return
+        yield architecture_event(timer, "query-embedding", "api", "openai", "Query embedding", "end")
         yield sse(
             "tool-call",
             toolName="guardrail_check",
@@ -533,6 +560,7 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
 
     # ── Phase 2: Session memory write ──
     if memory_service.is_configured() and latest_message.strip():
+        yield architecture_event(timer, "memory-user-write", "api", "memory", "Save user session event", "start")
         try:
             await memory_service.add_session_event(
                 owner_id=current_user_id,
@@ -542,8 +570,10 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 text=latest_message.strip(),
                 metadata={"source": "iris-memory-demo"},
             )
+            yield architecture_event(timer, "memory-user-write", "api", "memory", "Save user session event", "end")
             yield sse("status", text="Session memory updated.", ts=timer.elapsed_ms())
         except Exception as exc:
+            yield architecture_event(timer, "memory-user-write", "api", "memory", "Save user session event", "error")
             log.warning("Session memory write failed: %s", exc)
             yield sse("status", text=f"Memory logging unavailable: {exc}", ts=timer.elapsed_ms())
     phases.append(("memory_write", timer.phase("Session memory write")))
@@ -664,7 +694,7 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 if thinking_step and thinking_step != last_thinking_step:
                     last_thinking_step = thinking_step
                     yield sse("thinking-step", step=thinking_step, ts=timer.elapsed_ms())
-                yield sse("tool-call", toolName=name, toolKind=_tool_kind(name),
+                yield sse("tool-call", toolName=name, toolKind=_tool_kind(name), callId=run_id,
                            payload=tool_input if isinstance(tool_input, dict) else {"input": tool_input},
                            ts=timer.elapsed_ms())
 
@@ -680,7 +710,7 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 duration_ms = _tool_duration_ms(pending.get("start") if pending else None)
                 tool_total_ms += duration_ms
                 log.info("  tool %-40s %4dms  [%s]", name, duration_ms, _tool_kind(name))
-                yield sse("tool-result", toolName=name, toolKind=_tool_kind(name),
+                yield sse("tool-result", toolName=name, toolKind=_tool_kind(name), callId=run_id or None,
                            payload=output, durationMs=duration_ms, ts=timer.elapsed_ms())
 
             elif kind == "on_tool_error":
@@ -695,10 +725,11 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 duration_ms = _tool_duration_ms(pending.get("start") if pending else None)
                 tool_total_ms += duration_ms
                 log.info("  tool %-40s %4dms  [%s] ERROR", name, duration_ms, _tool_kind(name))
-                yield sse("tool-result", toolName=name, toolKind=_tool_kind(name),
+                yield sse("tool-result", toolName=name, toolKind=_tool_kind(name), callId=run_id or None,
                            payload=_tool_error_payload(error), durationMs=duration_ms, ts=timer.elapsed_ms())
 
             elif kind == "on_chat_model_start":
+                yield architecture_event(timer, str(event["run_id"]), "agent", "openai", "Chat model", "start")
                 llm_call_counter += 1
                 llm_start_times[event["run_id"]] = perf_counter()
                 step_id = f"llm-step-{llm_call_counter}"
@@ -712,6 +743,7 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 start = llm_start_times.pop(event["run_id"], perf_counter())
                 step_id = llm_step_ids.pop(event["run_id"], "")
                 duration_ms = max(round((perf_counter() - start) * 1000), 1)
+                yield architecture_event(timer, str(event["run_id"]), "agent", "openai", "Chat model", "end", duration_ms)
                 llm_total_ms += duration_ms
                 log.info("  llm  #%-2d                                   %4dms  (tools_before=%d)", llm_call_counter, duration_ms, tool_calls_seen)
                 if settings.show_llm_trace_steps and step_id:
@@ -786,6 +818,7 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
 
     # ── Phase 7: Save assistant response to memory ──
     if memory_service.is_configured() and final_text.strip():
+        yield architecture_event(timer, "memory-assistant-write", "api", "memory", "Save assistant session event", "start")
         try:
             await memory_service.add_session_event(
                 owner_id=current_user_id,
@@ -795,7 +828,9 @@ async def cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 text=final_text.strip(),
                 metadata={"source": "iris-memory-demo", "mode": request.mode},
             )
+            yield architecture_event(timer, "memory-assistant-write", "api", "memory", "Save assistant session event", "end")
         except Exception as exc:
+            yield architecture_event(timer, "memory-assistant-write", "api", "memory", "Save assistant session event", "error")
             log.warning("Assistant memory write failed: %s", exc)
             yield sse("status", text=f"Assistant memory logging unavailable: {exc}", ts=timer.elapsed_ms())
     phases.append(("memory_save", timer.phase("Assistant memory save")))

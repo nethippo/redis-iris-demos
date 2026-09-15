@@ -18,6 +18,7 @@ from redisvl.utils.vectorize import OpenAITextVectorizer
 
 from backend.app.core.domain_contract import GuardrailConfig
 from backend.app.redis_connection import build_redis_url
+from backend.app.redis_trace import trace_redis
 from backend.app.settings import Settings
 
 log = logging.getLogger("iris.guardrail")
@@ -97,7 +98,8 @@ class GuardrailService:
             return {"allowed": True, "route": None, "distance": None, "block_message": None}
         try:
             router = await self._ensure_router()
-            match = await asyncio.to_thread(router, None, vector)
+            async with trace_redis("router", "Route vector search"):
+                match = await asyncio.to_thread(router, None, vector)
             allowed = match.name == self._config.allowed_route_name
             block_message = None if allowed else self._block_messages.get(match.name)
             return {

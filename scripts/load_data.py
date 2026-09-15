@@ -76,6 +76,7 @@ async def main() -> None:
     raw_records = load_records(output_dir=output_dir, entity_by_file=entity_by_file)
 
     batch_size = 25
+    failures = 0
 
     async with UnifiedClient() as client:
         for class_name, rows in raw_records.items():
@@ -107,9 +108,12 @@ async def main() -> None:
                     total_failed += len(batch)
 
             print(f"  {class_name}: imported={total_imported}, failed={total_failed}")
+            failures += total_failed
             for err in all_errors:
                 print(f"    Error: {err}")
 
+    if failures:
+        raise SystemExit(f"Import incomplete: {failures} records failed; dataset summary not updated")
     summary = domain.write_dataset_meta(settings=settings, records=raw_records)
     print(f"  Wrote dataset summary → {domain.manifest.namespace.dataset_meta_key}")
     print(json.dumps(summary, indent=2))

@@ -1,0 +1,39 @@
+name: iris-sports-betting
+services:
+  backend:
+    build: .
+    image: iris-sports-betting-backend:local
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:8040:8040"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8040/api/health', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 5
+      start_period: 120s
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: iris-sports-betting-frontend:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3040:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+  setup:
+    profiles: ["setup"]
+    image: iris-sports-betting-backend:local
+    env_file: .env
+    volumes:
+      - ./.env:/app/.env
+      - ./output:/app/output
+    command: ["python", "scripts/docker_setup.py"]

@@ -14,7 +14,9 @@ def test_sports_betting_domain_loads() -> None:
     assert domain.manifest.branding.theme.landing_bg
 
 
-def test_sports_betting_data_generator_writes_expected_files(tmp_path: Path) -> None:
+def test_sports_betting_data_generator_writes_expected_files(tmp_path: Path, monkeypatch) -> None:
+    # Dataset shape tests must not call OpenAI when another test or .env sets a key.
+    monkeypatch.setenv("OPENAI_API_KEY", "")
     domain = load_domain("sports-betting")
     result = domain.generate_demo_data(output_dir=tmp_path, update_env_file=False)
     assert result.env_updates["DEMO_USER_ID"] == "PLY_DEMO_001"
