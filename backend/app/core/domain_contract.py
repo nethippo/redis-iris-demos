@@ -100,6 +100,8 @@ class GuardrailConfig(BaseModel):
     router_name: str
     allowed_route_name: str
     routes: list[GuardrailRouteConfig]
+    # Optional, domain-scoped rejection copy: reason -> language -> message.
+    rejection_messages: dict[str, dict[str, str]] = Field(default_factory=dict)
 
 
 class SeedMemory(BaseModel):

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
 from typing import Any
 
 from openai import AsyncOpenAI
@@ -102,8 +103,10 @@ class GuardrailService:
                 match = await asyncio.to_thread(router, None, vector)
             allowed = match.name == self._config.allowed_route_name
             block_message = None if allowed else self._block_messages.get(match.name)
+            reason = "allowed" if allowed else "no_match" if match.name is None else "off_topic"
             return {
                 "allowed": allowed,
+                **({"reason": reason} if self._config.rejection_messages else {}),
                 "route": match.name,
                 "distance": match.distance,
                 "block_message": block_message,
@@ -111,6 +114,14 @@ class GuardrailService:
         except Exception:
             log.warning("Guardrail check failed, allowing through", exc_info=True)
             return {"allowed": True, "route": None, "distance": None, "block_message": None}
+
+    def rejection_message(self, text: str, result: dict[str, Any]) -> str | None:
+        """Language affects copy only; it never changes the routing decision."""
+        if not self._config or result.get("allowed", True):
+            return None
+        messages = self._config.rejection_messages.get(result.get("reason", ""), {})
+        language = "ko" if re.search(r"[가-힣ㄱ-ㅎㅏ-ㅣ]", text) else "en"
+        return messages.get(language) or messages.get("en") or result.get("block_message")
 
     async def warm_up(self) -> None:
         if self.is_configured():

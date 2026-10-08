@@ -1,0 +1,702 @@
+[
+  {
+    "id": "holdout-001",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "보통예금 통장 잔고를 볼 수 있을까요?"
+  },
+  {
+    "id": "holdout-002",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제가 갖고 있는 저축 계좌들의 금액을 합쳐서 보여 주시겠어요?"
+  },
+  {
+    "id": "holdout-003",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "당좌계좌의 현재 잔고를 확인하고 싶어요"
+  },
+  {
+    "id": "holdout-004",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제 이름으로 등록된 은행 계좌를 찾아주세요"
+  },
+  {
+    "id": "holdout-005",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "가입 중인 예금과 보험 목록이 필요해요"
+  },
+  {
+    "id": "holdout-006",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "보유 중인 카드 상품 정보를 보여 주시겠어요?"
+  },
+  {
+    "id": "holdout-007",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "내 프로필에 연결된 신용카드들을 확인해줘"
+  },
+  {
+    "id": "holdout-008",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "카드별로 연회비가 얼마나 부과되는지 궁금해요"
+  },
+  {
+    "id": "holdout-009",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "연회비 청구를 면제받으려면 어떤 조건을 충족해야 하죠?"
+  },
+  {
+    "id": "holdout-010",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "저축용 통장을 새로 개설할 때 준비해야 할 것을 알려줘"
+  },
+  {
+    "id": "holdout-011",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "신규 고객이 계좌를 개설하는 과정을 알려주세요"
+  },
+  {
+    "id": "holdout-012",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "예금 계좌 개설에 필요한 절차를 안내해 주세요"
+  },
+  {
+    "id": "holdout-013",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "반년짜리 정기예금의 이자율이 궁금해요"
+  },
+  {
+    "id": "holdout-014",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "일 년 만기 정기예금 조건과 이율을 비교해 주세요"
+  },
+  {
+    "id": "holdout-015",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행의 정기예금 상품별 최소 가입금액은 얼마인가요?"
+  },
+  {
+    "id": "holdout-016",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "정기예금 만기 전에 돈을 빼면 이자를 받을 수 있나요?"
+  },
+  {
+    "id": "holdout-017",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "예금 중도해지 수수료에 대해 안내해 주세요"
+  },
+  {
+    "id": "holdout-018",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제 보유 상품 중 정기예금이 있는지 확인해줘"
+  },
+  {
+    "id": "holdout-019",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "가입한 상해보험의 상품 내용을 보고 싶어요"
+  },
+  {
+    "id": "holdout-020",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행에서 제공하는 보험의 종류와 보험료를 설명해 주세요"
+  },
+  {
+    "id": "holdout-021",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "현재 가입 중인 은행 보험 상품 내역을 보여줘"
+  },
+  {
+    "id": "holdout-022",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "탐피네스 지점의 평일 개점 시간을 확인해 주세요"
+  },
+  {
+    "id": "holdout-023",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "비샨 지점에서 계좌 관련 업무를 볼 수 있나요?"
+  },
+  {
+    "id": "holdout-024",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행의 자동화 로비 이용 가능 시간을 알려줘"
+  },
+  {
+    "id": "holdout-025",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "지점을 방문하려는데 은행 업무 시간을 알고 싶어요"
+  },
+  {
+    "id": "holdout-026",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "최근에 접수한 상담 신청이 완료됐는지 확인해줘"
+  },
+  {
+    "id": "holdout-027",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "내 은행 고객지원 요청 목록을 가져와 주세요"
+  },
+  {
+    "id": "holdout-028",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행 서비스 신청 건의 진행 상황을 조회해 주세요"
+  },
+  {
+    "id": "holdout-029",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제 소유 계좌 간 자금을 옮기는 절차를 설명해 주세요"
+  },
+  {
+    "id": "holdout-030",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "저축계좌와 당좌계좌의 보유 현황을 확인해 주세요"
+  },
+  {
+    "id": "holdout-031",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "May I see the current amount in each of my deposit accounts?"
+  },
+  {
+    "id": "holdout-032",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Fetch the savings accounts held under my name."
+  },
+  {
+    "id": "holdout-033",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What is the available balance on my current account today?"
+  },
+  {
+    "id": "holdout-034",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Display the products linked to my bank customer record."
+  },
+  {
+    "id": "holdout-035",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "List my existing credit card products please."
+  },
+  {
+    "id": "holdout-036",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Which insurance policies do I hold through this bank?"
+  },
+  {
+    "id": "holdout-037",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What annual charges apply to the cards in my profile?"
+  },
+  {
+    "id": "holdout-038",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Am I able to request a waiver of my card membership fee?"
+  },
+  {
+    "id": "holdout-039",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Describe the steps for establishing a new savings account."
+  },
+  {
+    "id": "holdout-040",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What paperwork is required when opening an account with you?"
+  },
+  {
+    "id": "holdout-041",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Explain the rate offered on your half year fixed term deposit."
+  },
+  {
+    "id": "holdout-042",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What terms apply to your one year fixed deposit product?"
+  },
+  {
+    "id": "holdout-043",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "How much interest is lost if a deposit is closed ahead of its maturity date?"
+  },
+  {
+    "id": "holdout-044",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Are there penalties for taking money out of a fixed term deposit early?"
+  },
+  {
+    "id": "holdout-045",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Could you describe the accident insurance plans sold by the bank?"
+  },
+  {
+    "id": "holdout-046",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "At what time does the Tampines banking branch open?"
+  },
+  {
+    "id": "holdout-047",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Can I use full banking services at the Bishan location?"
+  },
+  {
+    "id": "holdout-048",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What can customers do in the automated banking lobby?"
+  },
+  {
+    "id": "holdout-049",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Retrieve the status of the support cases I submitted recently."
+  },
+  {
+    "id": "holdout-050",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "How can I transfer money from savings to my own current account?"
+  },
+  {
+    "id": "holdout-051",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "내 savings 통장의 현재 금액을 보고 싶어요"
+  },
+  {
+    "id": "holdout-052",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "내 이름으로 된 current 계좌 목록 부탁해요"
+  },
+  {
+    "id": "holdout-053",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "가입 중인 banking products 현황을 보여줄래?"
+  },
+  {
+    "id": "holdout-054",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "내 customer profile에 연결된 카드가 뭐야?"
+  },
+  {
+    "id": "holdout-055",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Fixed deposit을 만기 전에 끝내면 penalty가 얼마야?"
+  },
+  {
+    "id": "holdout-056",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "FD12 상품의 이자 조건을 알려줘"
+  },
+  {
+    "id": "holdout-057",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "카드 membership fee 면제 신청 방법을 설명해줘"
+  },
+  {
+    "id": "holdout-058",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "은행의 accident coverage 상품을 알아보고 싶어요"
+  },
+  {
+    "id": "holdout-059",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Bishan branch에서 가능한 업무가 뭐가 있어요?"
+  },
+  {
+    "id": "holdout-060",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "최근 support case의 진행 상황을 조회해주세요"
+  },
+  {
+    "id": "holdout-061",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "간단한 오믈렛 만드는 순서를 알려줘"
+  },
+  {
+    "id": "holdout-062",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "이번 주말 제주도의 일기예보가 궁금해요"
+  },
+  {
+    "id": "holdout-063",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "루비 언어로 배열 정렬 함수를 짜줘"
+  },
+  {
+    "id": "holdout-064",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "우정을 주제로 짧은 시를 써줘"
+  },
+  {
+    "id": "holdout-065",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "피라미드가 건설된 역사를 설명해줘"
+  },
+  {
+    "id": "holdout-066",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "멕시코의 수도는 어디인가요?"
+  },
+  {
+    "id": "holdout-067",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "판타지 소설의 줄거리를 만들어줘"
+  },
+  {
+    "id": "holdout-068",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "강아지를 주인공으로 동요를 지어줘"
+  },
+  {
+    "id": "holdout-069",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "이탈리아 관광 코스를 계획해 줘"
+  },
+  {
+    "id": "holdout-070",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "야구 경기 승자를 예측해 주세요"
+  },
+  {
+    "id": "holdout-071",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "재미있는 아재개그를 해줘"
+  },
+  {
+    "id": "holdout-072",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "인사말을 포르투갈어로 번역해줘"
+  },
+  {
+    "id": "holdout-073",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "우주 팽창의 원리를 설명해 줘"
+  },
+  {
+    "id": "holdout-074",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "컴퓨터 프린터 오류 해결법을 알려줘"
+  },
+  {
+    "id": "holdout-075",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "삼각함수 수학 숙제를 대신 풀어줘"
+  },
+  {
+    "id": "holdout-076",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "통장을 주제로 재미있는 삼행시를 써줘"
+  },
+  {
+    "id": "holdout-077",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "예금 계좌를 변수명으로 사용하는 정렬 코드 예제를 만들어줘"
+  },
+  {
+    "id": "holdout-078",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "신용카드처럼 생긴 쿠키 레시피를 알려줘"
+  },
+  {
+    "id": "holdout-079",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "은행원을 주인공으로 사랑 노래를 써줘"
+  },
+  {
+    "id": "holdout-080",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "가상의 은행 앱 홈페이지를 HTML로 디자인해줘"
+  },
+  {
+    "id": "holdout-081",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Teach me how to cook a mushroom omelette."
+  },
+  {
+    "id": "holdout-082",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "What is the weekend weather forecast for Paris?"
+  },
+  {
+    "id": "holdout-083",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Implement a sorting function in the Ruby programming language."
+  },
+  {
+    "id": "holdout-084",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Write a short poem about friendship."
+  },
+  {
+    "id": "holdout-085",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Explain why the universe is expanding."
+  },
+  {
+    "id": "holdout-086",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Predict the winner of a baseball match."
+  },
+  {
+    "id": "holdout-087",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Plan a sightseeing trip through Italy."
+  },
+  {
+    "id": "holdout-088",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Invent a fairy tale about a puppy."
+  },
+  {
+    "id": "holdout-089",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Translate a greeting into Portuguese."
+  },
+  {
+    "id": "holdout-090",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Help me complete a trigonometry assignment."
+  },
+  {
+    "id": "holdout-091",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "My printer is broken; suggest troubleshooting steps."
+  },
+  {
+    "id": "holdout-092",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Explain how the Egyptian pyramids were built."
+  },
+  {
+    "id": "holdout-093",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Suggest a television series for tonight."
+  },
+  {
+    "id": "holdout-094",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Create a strength training workout schedule."
+  },
+  {
+    "id": "holdout-095",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Design a wizard character for a fantasy game."
+  },
+  {
+    "id": "holdout-096",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Compose romantic lyrics featuring a bank employee."
+  },
+  {
+    "id": "holdout-097",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Write sorting code with a variable called deposit_account."
+  },
+  {
+    "id": "holdout-098",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Invent a cookie recipe shaped like an ATM card."
+  },
+  {
+    "id": "holdout-099",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Write an acrostic poem using the word BANK."
+  },
+  {
+    "id": "holdout-100",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Build an HTML landing page for an imaginary bank."
+  }
+]

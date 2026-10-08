@@ -87,3 +87,43 @@ Radish Bank: `What are my account balances and product holdings?`
 은행 거래와 스포츠 베팅 데이터는 합성 데모입니다.
 
 환경 파일, 키, 생성 데이터와 로컬 검증 기록은 Git 및 Docker 빌드 컨텍스트에서 제외됩니다.
+
+## Radish Bank 한국어 Guardrail
+
+Radish는 한국어·영어·혼합 은행 예문과 업무 외 예문을 함께 사용합니다.
+은행 경로의 거리 임계값은 0.6, 업무 외 경로는 0.65이며 가장 가까운 예문으로 분류합니다.
+분류되지 않은 입력은 자동 허용하지 않고 질문 구체화를 안내합니다.
+한국어 입력에는 한국어 안내를 사용합니다. 안내 언어 선택은 허용 판정에 영향을 주지 않습니다.
+
+- `내 계좌 잔액과 보유 상품을 알려주세요` → 은행 조회
+- `정기예금을 만기 전에 해지하면 어떤 불이익이 있나요?` → 정책 조회
+- `파이썬으로 리스트 정렬 코드를 작성해줘` → 업무 외 안내
+- `네` → 질문 구체화 안내, Activity의 `Needs clarification`, Data Flow의 `CLARIFY`
+
+이 정책은 Real-time Context와 Simple RAG에 적용됩니다. 미분류 또는 업무 외 결과에서는
+후속 은행 도구를 실행하지 않습니다. 짧은 후속 질문의 대화 맥락 분류와 한국어 LangCache는 별도 개선 범위입니다.
+예외 발생 시 기존 공통 서비스의 허용 정책은 그대로 유지하므로, 이 주제 분류기를 권한 검증으로 사용하지 않습니다.
+
+### 실제 임베딩 및 Redis 평가
+
+아래 도구는 라우터를 초기화하거나 Redis 데이터를 수정하지 않습니다.
+`--redis`는 이미 배포된 Radish 인덱스의 경로별 최근접 거리를 읽어 분류 결과를 비교합니다.
+모델을 별도 호출해 생성한 벡터는 거리의 소수점 값이 다를 수 있으므로 최대 거리 차이를 보고하고,
+최종 경로 판정 일치 여부와 허용률/오통과 건수를 검증합니다.
+
+```bash
+mkdir -p output/korean-guardrail
+docker run --rm --env-file .env.radish \
+  -v "$PWD:/work:ro" -v "$PWD/output/korean-guardrail:/results" \
+  iris-radish-bank-backend:local \
+  python /work/scripts/evaluate_radish_guardrail.py \
+  --cases /work/tests/fixtures/radish_guardrail_holdout.json \
+  --split validation --check --redis \
+  --cache /results/embeddings.json --output /results/redis-validation.json
+```
+
+`radish_guardrail_cases.json`에는 개발·회귀·문맥 의존 진단 문장이 있습니다.
+`radish_guardrail_holdout.json`은 예문 보완에 사용하지 않은 별도 검증 세트입니다.
+현재 고정 세트를 대상으로 계속 튜닝한다면 더 이상 미사용 검증 세트가 아니므로,
+새로운 독립 문장을 추가해 확인해야 합니다. 합성 평가 결과가 모든 입력의 정확도를 보장하지는 않습니다.
+실행 시 OpenAI 임베딩 API 비용이 발생하며, 평가 결과와 임베딩 캐시는 `output/`에만 저장합니다.

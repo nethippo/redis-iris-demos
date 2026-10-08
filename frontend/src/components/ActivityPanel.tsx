@@ -190,7 +190,7 @@ function ActivityView({ allMessages, mode, isStreaming }: { allMessages: ChatMes
             <div className="activity-section-header">
               <span className="activity-section-title">Semantic Routing</span>
               <span className="activity-section-count">
-                {ragGuardrailAllowed ? "Allowed" : "Blocked"}
+                {ragGuardrailAllowed ? "Allowed" : ragGuardrailTools.some(t => (t.resultPayload as Record<string, unknown>)?.reason === "no_match") ? "Needs clarification" : "Blocked"}
               </span>
             </div>
             {ragGuardrailTools.map((tool, i) => (
@@ -255,7 +255,7 @@ function ActivityView({ allMessages, mode, isStreaming }: { allMessages: ChatMes
           <div className="activity-section-header">
             <span className="activity-section-title"><img src="/icons/semantic-routing-64-duotone.svg" alt="" className="section-icon" />Semantic Routing</span>
             <span className="activity-section-count">
-              {guardrailAllowed ? "Allowed" : "Blocked"}
+              {guardrailAllowed ? "Allowed" : guardrailTools.some(t => (t.resultPayload as Record<string, unknown>)?.reason === "no_match") ? "Needs clarification" : "Blocked"}
             </span>
           </div>
           {guardrailTools.map((tool, i) => (

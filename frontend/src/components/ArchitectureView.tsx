@@ -69,7 +69,7 @@ function Scene({ nodes, spans, selected, onSelect, animated, observedAnimated, r
 
       // Group volumes use the same world-space projection as their children.
       // These are architecture boundaries, not additional services or spans.
-      const group = (bounds: [number, number, number, number, number, number], title: string, subtitle: string, color: string, active: boolean) => {
+      const group = (bounds: [number, number, number, number, number, number], title: string, subtitle: string, color: string, outlineColor: string, active: boolean) => {
         const [x0,x1,y0,y1,z0,z1] = bounds;
         const corners: Vec3[] = [
           [x0,y0,z0], [x1,y0,z0], [x1,y0,z1], [x0,y0,z1],
@@ -82,15 +82,15 @@ function Scene({ nodes, spans, selected, onSelect, animated, observedAnimated, r
           ctx.closePath();ctx.fillStyle=color+"09";ctx.fill();
         }
         for (const [a,b] of [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]])
-          line(corners[a],corners[b],color+(active?"dd":"88"),active?1.8:1.2);
+          line(corners[a],corners[b],outlineColor+"33",active?1.8:1.2); // 20% opacity / 80% transparency
         const label = p([(x0+x1)/2,y1+14,(z0+z1)/2]);
         ctx.textAlign="center";ctx.fillStyle="#091922ee";ctx.beginPath();ctx.roundRect(label.x-86,label.y-37,172,34,6);ctx.fill();
         ctx.font="600 14px Inter, sans-serif";ctx.fillStyle=color;ctx.fillText(title,label.x,label.y-22);
         ctx.font="9px Inter, sans-serif";ctx.fillStyle="#a0bdb8";ctx.fillText(subtitle,label.x,label.y-9);
       };
-      group([-610,630,-30,280,-540,-60], "Redis Cloud", "Managed services + data", "#ff9ca5", false);
+      group([-610,630,-30,280,-540,-60], "Redis Cloud", "Managed services + data", "#ff9ca5", "#ffe0e4", false);
       const agentActive = current.some(s=>s.status === "running" && (["agent", "router"].includes(s.from) || ["agent", "router"].includes(s.to)));
-      group([-410,80,-15,165,20,215], "Agent", "in backend · shared process", "#a2f2d5", agentActive);
+      group([-410,80,-15,165,20,215], "Agent", "in backend · shared process", "#a2f2d5", "#d7fff0", agentActive);
 
       function path(from: ArchitectureNodeId, to: ArchitectureNodeId): Vec3[] {
         if ((from === "browser" && to === "api") || (from === "api" && to === "browser")) {
@@ -296,14 +296,14 @@ export function ArchitectureView({ messages, isStreaming, domain }: { messages: 
   const storageAccess=redisAccess(spans);
   const hasError=spans.some(s=>s.status==="error"||s.status==="interrupted") || turn?.requestFailed;
   const outcome=spans.find(s=>s.id==="request")?.outcome;
-  const status=replay?"REPLAY":live?"LIVE":!turn?"READY":hasError?"WITH ERRORS":outcome==="Blocked"?"BLOCKED":outcome==="Cache hit"?"CACHE HIT":"COMPLETE";
+  const status=replay?"REPLAY":live?"LIVE":!turn?"READY":hasError?"WITH ERRORS":outcome==="Needs clarification"?"CLARIFY":outcome==="Blocked"?"BLOCKED":outcome==="Cache hit"?"CACHE HIT":"COMPLETE";
   return <section className="architecture-view" aria-label="Data Flow">
     <div className="arch-heading"><div><span className="arch-eyebrow">{appName.toUpperCase()} / DATA FLOW</span><h2>Follow the context.</h2><p>Agent contains LangGraph and Semantic Router. Both share the FastAPI backend process. Redis Cloud groups managed services, Redis Database and RDI.</p></div><span className={`arch-status ${live&&!replay?"is-live":""} ${hasError?"has-error":""}`} role="status"><i/>{status}</span></div>
     <div className="arch-request"><label htmlFor="architecture-request">Request</label><select id="architecture-request" value={turn?.id??""} disabled={!turns.length} onChange={e=>{setTurnId(e.target.value);setReplay(false);setReplaying(false);}}>{!turns.length&&<option value="">Send a message to see live traffic</option>}{turns.map((t,i)=>{const prev=messages[messages.indexOf(t)-1];return <option key={t.id} value={t.id}>{i+1}. {prev?.content.slice(0,85)||"Chat request"}</option>;})}</select></div>
     <div className="arch-stats"><div><strong>{operations.length}</strong><span>observed operations</span></div><div><strong>{operations.filter(s=>s.label==="Chat model").length}</strong><span>chat model calls</span></div><div><strong>{duration(viewTime)}</strong><span>request elapsed</span></div></div>
     <div className="arch-ingestion"><span className="arch-ingestion-badge">ASSUMED INGESTION</span><strong>Source DB → RDI → Redis Database → Context Retriever</strong><span>Continuous data sync · illustration independent of chat requests</span></div>
     <div className="arch-stage"><div className="arch-stage-tools"><span>3D PERSPECTIVE</span><div><button type="button" onClick={()=>setAnimated(a=>!a)} aria-pressed={!animated}>{animated?"Pause motion":"Resume motion"}</button><button type="button" onClick={()=>setResetKey(k=>k+1)}>Reset view</button></div></div><Scene nodes={nodes} spans={spans} selected={selected} onSelect={setSelected} animated={animated} observedAnimated={animated&&(!replay||replaying)} resetKey={resetKey}/><div className="arch-stage-foot"><span>Drag to orbit · scroll / + − to zoom</span><span><i className="arch-line"/>Observed <i className="arch-line linked"/>Tool-linked <i className="arch-line dashed"/>Configured <i className="arch-line ingestion"/>Assumed ingestion</span></div></div>
-    <div className="arch-now" aria-live="polite"><i/>{pending.length?`${pending.map(s=>s.label).join(" · ")}`:!turn?"Waiting for your first request. Amber ingestion illustrates the assumed backend.":live?"Waiting for the next operation…":replay?"Recorded event playback":outcome==="Cache hit"?"Cache returned the answer. Chat model skipped.":outcome==="Blocked"?"Router blocked the request. Agent skipped.":hasError?"An operation failed or the stream was interrupted.":"Request finished. Select a component or replay the trace."}</div>
+    <div className="arch-now" aria-live="polite"><i/>{pending.length?`${pending.map(s=>s.label).join(" · ")}`:!turn?"Waiting for your first request. Amber ingestion illustrates the assumed backend.":live?"Waiting for the next operation…":replay?"Recorded event playback":outcome==="Cache hit"?"Cache returned the answer. Chat model skipped.":outcome==="Needs clarification"?"Please clarify the banking request. Agent skipped.":outcome==="Blocked"?"Router blocked the request. Agent skipped.":hasError?"An operation failed or the stream was interrupted.":"Request finished. Select a component or replay the trace."}</div>
     {turn?.requestFinished&&events.length>0&&<div className="arch-replay"><button type="button" onClick={()=>{setReplay(true);if(!replay||cursor>=elapsed)setCursor(0);setReplaying(p=>!p);}}>{replaying?"Pause replay":"Replay trace"}</button><input aria-label="Replay position" type="range" min={0} max={Math.max(elapsed,1)} value={replay?cursor:elapsed} onChange={e=>{setReplay(true);setReplaying(false);setCursor(Number(e.target.value));}}/><button type="button" onClick={()=>{setReplay(false);setReplaying(false);}}>Latest</button></div>}
     <div className="arch-storage"><div className="arch-section-title"><h3>Redis access</h3><span>SDK BOUNDARIES / TOOL CORRELATION</span></div><div className="arch-storage-grid">{storageAccess.map(access=><button type="button" className={`arch-storage-card ${access.status}`} key={access.module} onClick={()=>setSelected(access.module)}><strong>{nodeById[access.module].name} ↔ Redis</strong><span>{access.linked?"TOOL-LINKED · internal Redis untraced":"OBSERVED SDK CALLS"}</span><b>{access.calls.length} {access.linked?"MCP calls":"Redis calls"}</b><small>{access.status==="idle"?"No calls in this request":access.status==="running"?"Access in progress":access.status==="error"?"Access failed":access.status==="interrupted"?"Access interrupted":access.linked?"MCP finished · storage unverified":"Redis access completed"}</small>{!access.linked&&access.latest&&<small>{access.latest.label} · {duration(access.latest.durationMs??0)}</small>}</button>)}</div><p>LangCache &amp; Agent Memory: managed APIs; their backing storage is not traced or assumed to share this Redis DB.</p></div>
     <div className="arch-node-list" aria-label="Architecture components">{[

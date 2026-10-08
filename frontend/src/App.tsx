@@ -240,7 +240,7 @@ export default function App() {
                   return m;
                 case "done":
                   return { ...m, requestFinished: true, requestElapsedMs: ev.totalElapsedMs,
-                    architectureEvents: [...(m.architectureEvents ?? []), { id: "request", from: "browser", to: "api", label: "Chat request · via Nginx", phase: m.requestFailed ? "error" : "end", ts: ev.totalElapsedMs ?? performance.now() - requestStartedAt, outcome: ev.cacheHit ? "Cache hit" : ev.guardrailBlocked ? "Blocked" : undefined }] };
+                    architectureEvents: [...(m.architectureEvents ?? []), { id: "request", from: "browser", to: "api", label: "Chat request · via Nginx", phase: m.requestFailed ? "error" : "end", ts: ev.totalElapsedMs ?? performance.now() - requestStartedAt, outcome: ev.cacheHit ? "Cache hit" : ev.guardrailBlocked ? (ev.guardrailReason === "no_match" ? "Needs clarification" : "Blocked") : undefined }] };
                 case "status":
                   return {
                     ...m,

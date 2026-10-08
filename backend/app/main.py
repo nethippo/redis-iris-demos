@@ -471,6 +471,7 @@ async def _cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
                 "allowed": guard_result.get("allowed", True),
                 "route": guard_result.get("route"),
                 "distance": guard_result.get("distance"),
+                "reason": guard_result.get("reason"),
             },
             durationMs=guard_ms,
             ts=timer.elapsed_ms(),
@@ -479,15 +480,15 @@ async def _cs_event_stream(request: ChatRequest) -> AsyncIterator[str]:
         if not guard_result.get("allowed", True):
             app_name = domain.manifest.branding.app_name
             subtitle = domain.manifest.branding.subtitle.lower()
-            blocked_message = guard_result.get("block_message") or (
+            blocked_message = guardrail_service.rejection_message(latest_message, guard_result) or (
                 f"I'm your {app_name} {subtitle} assistant — "
                 "I can only help with topics related to this service. "
                 "What can I help you with today?"
             )
             yield sse("text-delta", delta=blocked_message, ts=timer.elapsed_ms())
-            yield sse("done", totalElapsedMs=timer.elapsed_ms(), guardrailBlocked=True)
+            yield sse("done", totalElapsedMs=timer.elapsed_ms(), guardrailBlocked=True, guardrailReason=guard_result.get("reason"))
             log.info(
-                "━━━ GUARDRAIL BLOCKED in %dms (route=%s, distance=%.3f): %s",
+                "━━━ GUARDRAIL BLOCKED in %dms (route=%s, distance=%s): %s",
                 guard_ms,
                 guard_result.get("route"),
                 guard_result.get("distance", 0),
@@ -867,6 +868,7 @@ async def rag_event_stream(question: str) -> AsyncIterator[str]:
                 "allowed": guard_result.get("allowed", True),
                 "route": guard_result.get("route"),
                 "distance": guard_result.get("distance"),
+                "reason": guard_result.get("reason"),
             },
             durationMs=guard_ms,
             ts=timer.elapsed_ms(),
@@ -874,13 +876,13 @@ async def rag_event_stream(question: str) -> AsyncIterator[str]:
         if not guard_result.get("allowed", True):
             app_name = domain.manifest.branding.app_name
             subtitle = domain.manifest.branding.subtitle.lower()
-            blocked_message = guard_result.get("block_message") or (
+            blocked_message = guardrail_service.rejection_message(question, guard_result) or (
                 f"I'm your {app_name} {subtitle} assistant — "
                 "I can only help with topics related to this service. "
                 "What can I help you with today?"
             )
             yield sse("text-delta", delta=blocked_message, ts=timer.elapsed_ms())
-            yield sse("done", totalElapsedMs=timer.elapsed_ms(), guardrailBlocked=True)
+            yield sse("done", totalElapsedMs=timer.elapsed_ms(), guardrailBlocked=True, guardrailReason=guard_result.get("reason"))
             return
 
     async for chunk in rag_service.stream_answer(question, timer):

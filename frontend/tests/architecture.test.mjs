@@ -61,3 +61,10 @@ test('concurrent Redis operations remain active until every call terminates',()=
   assert.equal(redisAccess(buildSpans(events))[1].status,'running');
   assert.equal(redisAccess(buildSpans(events,true))[1].calls[0].status,'interrupted');
 });
+
+test('unmatched guardrail asks for clarification instead of labeling it off-topic',()=>{
+  const make=reason=>architectureEvent({type:'tool-result',toolName:'guardrail_check',toolKind:'guardrail',payload:{allowed:false,route:null,distance:null,reason}},[]);
+  assert.equal(make('no_match').outcome,'Needs clarification');
+  assert.equal(make('off_topic').outcome,'Blocked');
+  assert.equal(make(undefined).outcome,'Blocked');
+});

@@ -1,0 +1,912 @@
+[
+  {
+    "id": "validation-001",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "저축계좌에 지금 얼마가 들어 있나요?"
+  },
+  {
+    "id": "validation-002",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제가 가지고 있는 모든 계좌의 잔액을 확인하고 싶습니다"
+  },
+  {
+    "id": "validation-003",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "현재 이용 중인 은행 상품 목록을 보여주세요"
+  },
+  {
+    "id": "validation-004",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "내 명의로 개설된 계좌 종류가 궁금해요"
+  },
+  {
+    "id": "validation-005",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "당좌 계좌에 남아 있는 돈을 조회해 주세요"
+  },
+  {
+    "id": "validation-006",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제 카드와 예금 상품 가입 현황을 확인해 주세요"
+  },
+  {
+    "id": "validation-007",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "6개월 만기 예금의 이율을 알려 주실래요?"
+  },
+  {
+    "id": "validation-008",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "일 년 동안 돈을 맡기면 적용되는 정기예금 금리는요?"
+  },
+  {
+    "id": "validation-009",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "만기가 되기 전에 정기예금을 해지하면 어떤 불이익이 있나요?"
+  },
+  {
+    "id": "validation-010",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "이 은행에서 가입할 수 있는 정기예금 상품을 비교해 주세요"
+  },
+  {
+    "id": "validation-011",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "예금을 중도에 찾을 때 이자는 어떻게 계산되나요?"
+  },
+  {
+    "id": "validation-012",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "정기예금을 새로 가입하려면 무엇이 필요한가요?"
+  },
+  {
+    "id": "validation-013",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "보유한 신용카드의 연회비가 얼마인지 확인해 주세요"
+  },
+  {
+    "id": "validation-014",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "카드 연회비를 면제받는 조건을 설명해 주세요"
+  },
+  {
+    "id": "validation-015",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제가 가진 카드 종류를 조회해 주시겠어요?"
+  },
+  {
+    "id": "validation-016",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "신용카드 수수료 관련 문의를 하고 싶어요"
+  },
+  {
+    "id": "validation-017",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "탐피네스 지점은 토요일에 몇 시까지 열어요?"
+  },
+  {
+    "id": "validation-018",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "비샨 지점에서 제공하는 은행 업무가 궁금합니다"
+  },
+  {
+    "id": "validation-019",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "가까운 은행 지점의 영업시간을 찾아주세요"
+  },
+  {
+    "id": "validation-020",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "무인 로비에서 이용할 수 있는 서비스는 무엇인가요?"
+  },
+  {
+    "id": "validation-021",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "상해보험 가입 시 내야 하는 보험료를 알려주세요"
+  },
+  {
+    "id": "validation-022",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행에서 판매 중인 보험 상품에는 어떤 것들이 있나요?"
+  },
+  {
+    "id": "validation-023",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제가 보유한 보험 상품 정보를 확인하고 싶습니다"
+  },
+  {
+    "id": "validation-024",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "최근 접수한 은행 상담 요청의 처리 상황을 알려 주세요"
+  },
+  {
+    "id": "validation-025",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "지난번 은행에 제출한 서비스 신청 내역을 조회해 주세요"
+  },
+  {
+    "id": "validation-026",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "제 저축계좌에서 당좌계좌로 옮기는 절차가 궁금해요"
+  },
+  {
+    "id": "validation-027",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "새 은행 계좌를 만드는 방법을 설명해 주세요"
+  },
+  {
+    "id": "validation-028",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "정기예금과 저축계좌의 차이를 이 은행 상품 기준으로 알려주세요"
+  },
+  {
+    "id": "validation-029",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행 계좌 관련 상담이 필요합니다"
+  },
+  {
+    "id": "validation-030",
+    "split": "validation",
+    "language": "ko",
+    "expected": "banking",
+    "text": "계좌 잔액과 가입 상품을 한꺼번에 확인해 주세요"
+  },
+  {
+    "id": "validation-031",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Please list every account registered to me and its balance."
+  },
+  {
+    "id": "validation-032",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "How much cash remains in my current account?"
+  },
+  {
+    "id": "validation-033",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Could you retrieve the balance of my savings account?"
+  },
+  {
+    "id": "validation-034",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Which banking products am I currently enrolled in?"
+  },
+  {
+    "id": "validation-035",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Show the credit cards associated with my customer profile."
+  },
+  {
+    "id": "validation-036",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What yield applies to a six month fixed deposit?"
+  },
+  {
+    "id": "validation-037",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Compare your available fixed deposit tenors and rates."
+  },
+  {
+    "id": "validation-038",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Explain the consequences of redeeming a deposit before maturity."
+  },
+  {
+    "id": "validation-039",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What interest would a twelve month deposit earn?"
+  },
+  {
+    "id": "validation-040",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Which documents do I need to open a deposit account?"
+  },
+  {
+    "id": "validation-041",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Can you explain the annual fee waiver requirements for my card?"
+  },
+  {
+    "id": "validation-042",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "How much does my card cost each year?"
+  },
+  {
+    "id": "validation-043",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Which types of credit cards do I currently hold?"
+  },
+  {
+    "id": "validation-044",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "When does your Tampines branch close on Saturdays?"
+  },
+  {
+    "id": "validation-045",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "What banking services are provided at Bishan?"
+  },
+  {
+    "id": "validation-046",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Are there self service facilities in your branch lobby?"
+  },
+  {
+    "id": "validation-047",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Tell me the premium for your accident coverage."
+  },
+  {
+    "id": "validation-048",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "List the insurance products available through this bank."
+  },
+  {
+    "id": "validation-049",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Could you check the progress of my recent service requests?"
+  },
+  {
+    "id": "validation-050",
+    "split": "validation",
+    "language": "en",
+    "expected": "banking",
+    "text": "Explain how to move funds between my own bank accounts."
+  },
+  {
+    "id": "validation-051",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "제 savings account 잔고를 확인해 줘"
+  },
+  {
+    "id": "validation-052",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Current account에 남은 금액이 얼마인가요?"
+  },
+  {
+    "id": "validation-053",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "제가 가입한 product holdings를 보여주세요"
+  },
+  {
+    "id": "validation-054",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "FD6 상품의 적용 이율이 궁금합니다"
+  },
+  {
+    "id": "validation-055",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "12개월 fixed deposit의 중도 해지 조건을 설명해줘"
+  },
+  {
+    "id": "validation-056",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Credit card annual fee 면제 조건을 알려줘"
+  },
+  {
+    "id": "validation-057",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Tampines branch가 주말에 문을 여나요?"
+  },
+  {
+    "id": "validation-058",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Bishan 지점의 available services를 알려주세요"
+  },
+  {
+    "id": "validation-059",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Accident insurance 보험료를 확인하고 싶어요"
+  },
+  {
+    "id": "validation-060",
+    "split": "validation",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "내 service request 처리 내역 좀 보여줘"
+  },
+  {
+    "id": "validation-061",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "집에서 김치찌개 맛있게 끓이는 법 알려줘"
+  },
+  {
+    "id": "validation-062",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "내일 서울에 비가 올까요?"
+  },
+  {
+    "id": "validation-063",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "파이썬으로 리스트를 정렬하는 코드를 만들어줘"
+  },
+  {
+    "id": "validation-064",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "사랑에 관한 시 한 편 써 주세요"
+  },
+  {
+    "id": "validation-065",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "우주의 나이가 얼마나 되는지 설명해줘"
+  },
+  {
+    "id": "validation-066",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "몽골의 수도가 어디인가요?"
+  },
+  {
+    "id": "validation-067",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "영화 대본을 만들어 주세요"
+  },
+  {
+    "id": "validation-068",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "고양이를 주인공으로 동화를 지어줘"
+  },
+  {
+    "id": "validation-069",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "주말 여행 일정을 짜 주세요"
+  },
+  {
+    "id": "validation-070",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "축구 경기 결과를 예측해줘"
+  },
+  {
+    "id": "validation-071",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "재미있는 말장난을 하나 알려줘"
+  },
+  {
+    "id": "validation-072",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "이 영어 문장을 프랑스어로 번역해줘"
+  },
+  {
+    "id": "validation-073",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "조선 시대 역사에 대해 설명해줘"
+  },
+  {
+    "id": "validation-074",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "컴퓨터가 느린데 운영체제 설정을 도와줘"
+  },
+  {
+    "id": "validation-075",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "미적분 숙제를 풀어 주세요"
+  },
+  {
+    "id": "validation-076",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "은행을 배경으로 로맨스 소설을 써줘"
+  },
+  {
+    "id": "validation-077",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "계좌라는 이름의 변수로 정렬 알고리즘을 작성해줘"
+  },
+  {
+    "id": "validation-078",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "카드 모양 케이크를 만드는 레시피를 알려줘"
+  },
+  {
+    "id": "validation-079",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "예금이라는 제목의 노래 가사를 창작해줘"
+  },
+  {
+    "id": "validation-080",
+    "split": "validation",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "은행 지점이 등장하는 비디오 게임 코드를 만들어줘"
+  },
+  {
+    "id": "validation-081",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Give me instructions for baking sourdough bread."
+  },
+  {
+    "id": "validation-082",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Will it rain in London this weekend?"
+  },
+  {
+    "id": "validation-083",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Implement quicksort in JavaScript."
+  },
+  {
+    "id": "validation-084",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Compose a romantic sonnet for a wedding."
+  },
+  {
+    "id": "validation-085",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Explain how black holes form."
+  },
+  {
+    "id": "validation-086",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Who won the latest football championship?"
+  },
+  {
+    "id": "validation-087",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Suggest an itinerary for a holiday in Tokyo."
+  },
+  {
+    "id": "validation-088",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Tell me a funny story about a cat."
+  },
+  {
+    "id": "validation-089",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Translate good morning into Italian."
+  },
+  {
+    "id": "validation-090",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Solve this calculus integration problem."
+  },
+  {
+    "id": "validation-091",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Help troubleshoot my laptop Wi-Fi connection."
+  },
+  {
+    "id": "validation-092",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Describe the causes of the French Revolution."
+  },
+  {
+    "id": "validation-093",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Recommend a science fiction movie."
+  },
+  {
+    "id": "validation-094",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Design a workout routine for running a marathon."
+  },
+  {
+    "id": "validation-095",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Create a fantasy roleplaying game character."
+  },
+  {
+    "id": "validation-096",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Write a detective novel set inside a bank."
+  },
+  {
+    "id": "validation-097",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Build a Python game with a variable named bank_account."
+  },
+  {
+    "id": "validation-098",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Create a birthday cake recipe shaped like a credit card."
+  },
+  {
+    "id": "validation-099",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Write song lyrics titled Fixed Deposit."
+  },
+  {
+    "id": "validation-100",
+    "split": "validation",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Generate CSS for a fictional banking logo."
+  },
+  {
+    "id": "development-101",
+    "split": "development",
+    "language": "ko",
+    "expected": "banking",
+    "text": "잔액 조회를 부탁합니다"
+  },
+  {
+    "id": "development-102",
+    "split": "development",
+    "language": "ko",
+    "expected": "banking",
+    "text": "정기예금 상품별 금리를 비교하고 싶어요"
+  },
+  {
+    "id": "development-103",
+    "split": "development",
+    "language": "ko",
+    "expected": "banking",
+    "text": "카드 연회비 면제 대상인지 알고 싶어"
+  },
+  {
+    "id": "development-104",
+    "split": "development",
+    "language": "ko",
+    "expected": "banking",
+    "text": "지점 운영 시간을 확인해 줘"
+  },
+  {
+    "id": "development-105",
+    "split": "development",
+    "language": "ko",
+    "expected": "banking",
+    "text": "은행 보험 상품을 알아보고 있습니다"
+  },
+  {
+    "id": "development-106",
+    "split": "development",
+    "language": "ko",
+    "expected": "banking",
+    "text": "내 고객지원 요청들을 보여줘"
+  },
+  {
+    "id": "development-107",
+    "split": "development",
+    "language": "en",
+    "expected": "banking",
+    "text": "Retrieve my account holdings please."
+  },
+  {
+    "id": "development-108",
+    "split": "development",
+    "language": "en",
+    "expected": "banking",
+    "text": "I need assistance understanding deposit withdrawal charges."
+  },
+  {
+    "id": "development-109",
+    "split": "development",
+    "language": "en",
+    "expected": "banking",
+    "text": "Can I get information about your branch services?"
+  },
+  {
+    "id": "development-110",
+    "split": "development",
+    "language": "en",
+    "expected": "banking",
+    "text": "What is the annual fee on the card I own?"
+  },
+  {
+    "id": "development-111",
+    "split": "development",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "Savings 잔액 좀 알려주세요"
+  },
+  {
+    "id": "development-112",
+    "split": "development",
+    "language": "mixed",
+    "expected": "banking",
+    "text": "FD 금리 비교 부탁해요"
+  },
+  {
+    "id": "development-113",
+    "split": "development",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "은행이라는 단어로 삼행시를 지어줘"
+  },
+  {
+    "id": "development-114",
+    "split": "development",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "계좌 관리 웹사이트용 자바스크립트 코드를 작성해줘"
+  },
+  {
+    "id": "development-115",
+    "split": "development",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "신용카드를 주제로 소설을 써줘"
+  },
+  {
+    "id": "development-116",
+    "split": "development",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "제주도 맛집을 추천해줘"
+  },
+  {
+    "id": "development-117",
+    "split": "development",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "자바 코드 오류를 고쳐줘"
+  },
+  {
+    "id": "development-118",
+    "split": "development",
+    "language": "ko",
+    "expected": "blocked",
+    "text": "내일 기온을 알려줘"
+  },
+  {
+    "id": "development-119",
+    "split": "development",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Write a joke about savings accounts."
+  },
+  {
+    "id": "development-120",
+    "split": "development",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Create a SQL tutorial using a bank database."
+  },
+  {
+    "id": "development-121",
+    "split": "development",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Give me a recipe for pasta."
+  },
+  {
+    "id": "development-122",
+    "split": "development",
+    "language": "en",
+    "expected": "blocked",
+    "text": "Summarize the history of ancient Greece."
+  },
+  {
+    "id": "development-123",
+    "split": "development",
+    "language": "mixed",
+    "expected": "blocked",
+    "text": "은행 배경으로 love poem 써줘"
+  },
+  {
+    "id": "development-124",
+    "split": "development",
+    "language": "mixed",
+    "expected": "blocked",
+    "text": "Python으로 credit card game을 만들어줘"
+  },
+  {
+    "id": "context-125",
+    "split": "context",
+    "language": "ko",
+    "expected": "clarify",
+    "text": "네"
+  },
+  {
+    "id": "context-126",
+    "split": "context",
+    "language": "ko",
+    "expected": "clarify",
+    "text": "아니요"
+  },
+  {
+    "id": "context-127",
+    "split": "context",
+    "language": "ko",
+    "expected": "clarify",
+    "text": "그 계좌는?"
+  },
+  {
+    "id": "context-128",
+    "split": "context",
+    "language": "ko",
+    "expected": "clarify",
+    "text": "그걸로 해주세요"
+  },
+  {
+    "id": "context-129",
+    "split": "context",
+    "language": "ko",
+    "expected": "clarify",
+    "text": "얼마인데?"
+  },
+  {
+    "id": "context-130",
+    "split": "context",
+    "language": "ko",
+    "expected": "clarify",
+    "text": "응 고마워"
+  }
+]

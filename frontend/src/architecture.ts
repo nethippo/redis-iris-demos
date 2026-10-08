@@ -84,7 +84,7 @@ export function architectureEvent(ev: Record<string, any>, prior: ArchitectureEv
   const id = ev.callId || (!isStart && open?.id) || `tool-${prior.length}-${name}`;
   const p = ev.payload ?? {};
   const failed = !!p.error || p.isError === true;
-  const outcome = failed ? "Failed" : p.demo_blocked ? "Simulated tool" : p.hit === true ? "Cache hit" : p.hit === false ? "Cache miss" : p.allowed === false ? "Blocked" : p.allowed === true ? "Allowed" : undefined;
+  const outcome = failed ? "Failed" : p.demo_blocked ? "Simulated tool" : p.hit === true ? "Cache hit" : p.hit === false ? "Cache miss" : p.allowed === false ? (p.reason === "no_match" ? "Needs clarification" : "Blocked") : p.allowed === true ? "Allowed" : undefined;
   return { id, from, to, label: name, phase: isStart ? "start" : failed ? "error" : "end", ts: ev.ts ?? 0, durationMs: ev.durationMs, outcome };
 }
 
