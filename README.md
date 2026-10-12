@@ -40,6 +40,8 @@ The `legacy/context-engine-demos/` directory contains an archived copy of the or
 
 For parallel Sports Desk and Radish Bank containers and the live 3D Data Flow view, see the [Docker guide (한국어)](docker/README.ko.md).
 
+For the Korean customer demo improvement plan, automatic memory integration gaps, and the proposed 30-day retention requirement, see the [Korean demo roadmap](docs/korean-demo-roadmap.ko.md). The retention policy is not yet implemented.
+
 ### Prerequisites
 
 - Python 3.11+
