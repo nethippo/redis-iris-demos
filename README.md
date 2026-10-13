@@ -2,195 +2,193 @@
 
 # Redis Iris Demos
 
-**Reusable demo apps powered by Redis Iris**
+**Redis Iris 기반의 재사용 가능한 데모 애플리케이션**
 
-Multi-domain AI agent demos for [Redis Iris](https://redis.io/iris/): Redis's unified context engine for AI agents.
+[Redis Iris](https://redis.io/iris/)는 AI 에이전트를 위한 Redis의 통합 컨텍스트 엔진입니다. 이 저장소는 여러 산업 분야의 AI 에이전트 데모를 제공합니다.
 
-Every domain runs Context Retriever, Agent Memory, LangCache, and Semantic Routign.
+모든 도메인은 Context Retriever, Agent Memory, LangCache, Semantic Routing을 사용합니다.
+
+[한국어](Readme-ko.md) · [English — origin GitHub의 영문 원본](https://github.com/nethippo/redis-iris-demos/blob/db7445eb35f0f4741fd4acc83016a0f090f2c95f/README.md)
+
 </div>
 
 ---
-## Iris Components in Demo
 
-| Solution | What it does |
+## 데모에 사용되는 Iris 구성 요소
+
+| 솔루션 | 역할 |
+|--------|------|
+| **Semantic Routing** | 주제에서 벗어난 질문이 LLM에 전달되기 전에 차단합니다. |
+| **LangCache** | 의미가 유사한 질문에 캐시된 응답을 반환합니다. |
+| **Agent Memory** | 단기 세션 컨텍스트와 장기 사용자 지식을 프롬프트에 반영합니다. |
+| **Context Retriever** | 에이전트가 모든 비즈니스 데이터에 접근할 수 있도록 스키마 기반의 명확한 경로를 제공합니다. |
+
+## 도메인
+
+| 산업 분야 | 애플리케이션 | 스크린샷 |
+|-----------|--------------|----------|
+| 음식 배달 | Redis Eats | <img src="docs/screenshots/Demo_Redis_Eats.png" width="300" /> |
+| 전자제품 유통 | ElectroHub | <img src="docs/screenshots/Demo_ElectroHub.png" width="300" /> |
+| 금융 리서치 | ShiftIQ | <img src="docs/screenshots/Demo_ShiftIQ.png" width="300" /> |
+| 헬스케어 | RedHealthConnect | <img src="docs/screenshots/Demo_RedHealthConnect.png" width="300" /> |
+| 소매 금융 | Radish Bank | <img src="docs/screenshots/Demo_Radish_Bank.png" width="300" /> |
+| 통신 | R-Mobile | <img src="docs/screenshots/Demo_R-Mobile.png" width="300" /> |
+| 스포츠 베팅 | Sports Desk | <img src="docs/screenshots/Demo_Sports_Desk.png" width="300" /> |
+
+## 이전 버전
+
+`legacy/context-engine-demos/` 디렉터리는 원본 `redis/context-engine-demos` 저장소의 보관 사본을 담고 있습니다. 이 1세대 데모는 Context Retriever만 보여 주었습니다. 현재 저장소는 여기에 Semantic Routing, LangCache, Agent Memory와 도메인별 브랜딩을 추가한 후속 버전입니다.
+
+## 시작하기
+
+Sports Desk와 Radish Bank 컨테이너를 동시에 실행하는 방법과 실시간 3D Data Flow 화면은 [Docker 가이드](docker/README.ko.md)를 참고하세요.
+
+한국 고객용 데모 개선 계획, 자동 메모리 연동의 미완성 부분, 제안된 30일 보존 요구사항은 [한국어 데모 로드맵](docs/korean-demo-roadmap.ko.md)을 참고하세요. 보존 정책은 아직 구현되지 않았습니다.
+
+### 사전 준비
+
+- Python 3.11 이상
+- Node.js 18 이상
+- [uv](https://docs.astral.sh/uv/) (Python 패키지 관리자)
+
+### 필요한 Redis Cloud 서비스 및 API 정보
+
+| 서비스 | 필요한 정보 |
 |--------|-------------|
-| **Semantic Routing** | Blocks off-topic queries before they reach the LLM |
-| **LangCache** | Returns cached responses for semantically similar questions |
-| **Agent Memory** | Enriches prompts with short-term session context + long-term user knowledge |
-| **Context Retriever** | Give agents clean, schema-first paths through all business data |
+| Redis 데이터베이스 | 호스트, 포트, 비밀번호 |
+| [Context Surfaces](https://redis.io/docs/latest/develop/ai/context-engine/context-retriever/) | 관리자 키 |
+| [Agent Memory](https://redis.io/docs/latest/develop/ai/context-engine/agent-memory/) | 기본 URL, 스토어 ID, API 키 |
+| [LangCache](https://redis.io/docs/latest/develop/ai/context-engine/langcache/) | 호스트, 캐시 ID, API 키 |
+| OpenAI | [API 키](https://platform.openai.com/api-keys) |
 
-## Domains
-
-| Industry | App | Screenshot |
-|----------|-----|------------|
-| Food delivery | Redis Eats | <img src="docs/screenshots/Demo_Redis_Eats.png" width="300" /> |
-| Electronics Retail | ElectroHub | <img src="docs/screenshots/Demo_ElectroHub.png" width="300" /> |
-| Financial research | ShiftIQ | <img src="docs/screenshots/Demo_ShiftIQ.png" width="300" /> |
-| Healthcare | RedHealthConnect | <img src="docs/screenshots/Demo_RedHealthConnect.png" width="300" /> |
-| Retail banking | Radish Bank | <img src="docs/screenshots/Demo_Radish_Bank.png" width="300" /> |
-| Telcp | R-Mobile | <img src="docs/screenshots/Demo_R-Mobile.png" width="300" /> |
-| Sports betting | Sports Desk | <img src="docs/screenshots/Demo_Sports_Desk.png" width="300" /> |
-
-## Legacy
-
-The `legacy/context-engine-demos/` directory contains an archived copy of the original `redis/context-engine-demos` repository — the first-generation demo that showcased Context Retriever only. The current repo supersedes it with Semantic Routing, LangCache, Agent Memory, and domain-specific branding.
-
-
-## Getting Started
-
-For parallel Sports Desk and Radish Bank containers and the live 3D Data Flow view, see the [Docker guide (한국어)](docker/README.ko.md).
-
-For the Korean customer demo improvement plan, automatic memory integration gaps, and the proposed 30-day retention requirement, see the [Korean demo roadmap](docs/korean-demo-roadmap.ko.md). The retention policy is not yet implemented.
-
-### Prerequisites
-
-- Python 3.11+
-- Node.js 18+
-- [uv](https://docs.astral.sh/uv/) (Python package manager)
-
-### Redis Cloud services needed
-
-| Service | What you need |
-|---------|--------------|
-| Redis database | Host, port, password |
-| [Context Surfaces](https://redis.io/docs/latest/develop/ai/context-engine/context-retriever/) | Admin key |
-| [Agent Memory](https://redis.io/docs/latest/develop/ai/context-engine/agent-memory/) | Base URL, store ID, API key |
-| [LangCache](https://redis.io/docs/latest/develop/ai/context-engine/langcache/) | Host, cache ID, API key |
-| OpenAI | [API key](https://platform.openai.com/api-keys) |
-
-### First time
+### 처음 실행할 때
 
 ```bash
-make install                      # Install Python + JS dependencies
-cp .env.example .env              # Fill in credentials
-make setup                        # Generate data, load Redis, seed memory + cache
-make dev                          # Start at localhost:3040
+make install                      # Python 및 JS 의존성 설치
+cp .env.example .env              # 복사한 .env에 인증 정보 입력
+make setup                        # 데이터 생성, Redis 적재, 메모리 및 캐시 초기 데이터 등록
+make dev                          # localhost:3040에서 시작
 ```
 
-### Coming back (same domain)
+### 같은 도메인을 다시 실행할 때
 
 ```bash
-make dev                          # Data persists in Redis
+make dev                          # Redis에 저장된 데이터 재사용
 ```
 
-If the agent has no tools (Redis was flushed, instance recycled), reload:
+Redis 데이터가 삭제되었거나 인스턴스가 교체되어 에이전트에 도구가 없다면 데이터를 다시 적재하세요.
 
 ```bash
-make reset                        # Reload data + re-seed
+make reset                        # 데이터 재적재 및 초기 데이터 재등록
 make dev
 ```
 
-### Switching domains
-
+### 도메인 변경하기
 
 ```bash
- # Update the DEMO_DOMAIN in .env
-make setup      
+# .env의 DEMO_DOMAIN 값을 변경
+make setup
 make dev
 ```
 
-When switching to `radish-bank`, leave `MEMORY_SIMILARITY_THRESHOLD` unset or commented out
-to use the Radish Bank Agent Memory default of `0.5`. Older local `.env` files may still
-contain `MEMORY_SIMILARITY_THRESHOLD=0.7`; keep that only when you want to explicitly
-override the Radish tuning.
+`radish-bank`로 변경할 때는 `MEMORY_SIMILARITY_THRESHOLD`를 설정하지 않거나 주석 처리하여 Radish Bank Agent Memory의 기본값인 `0.5`를 사용하세요. 이전 로컬 `.env` 파일에는 `MEMORY_SIMILARITY_THRESHOLD=0.7`이 남아 있을 수 있습니다. Radish의 기본 설정을 명시적으로 덮어쓰려는 경우에만 이 값을 유지하세요.
 
+## `make setup`의 실행 단계
 
-## What `make setup` does
+1. `.env`에 `DEMO_DOMAIN`을 설정합니다.
+2. 도메인 스키마에서 Context Surface 모델을 생성합니다.
+3. 합성 데이터(JSONL 파일)를 생성합니다.
+4. Redis 데이터베이스의 데이터를 모두 삭제합니다.
+5. 새 Context Surface를 생성하고 `.env`에 `CTX_SURFACE_ID`와 `MCP_AGENT_KEY`를 기록합니다.
+6. Redis에 데이터를 적재하고 검색 인덱스를 생성합니다.
+7. Agent Memory의 기존 메모리를 지우고 도메인별 장기 메모리 2개를 등록합니다.
+8. LangCache를 비우고 도메인별 캐시 응답 1개를 등록합니다.
+9. 서버가 시작되면 Semantic Routing이 자동으로 초기화됩니다.
 
-1. Sets `DEMO_DOMAIN` in `.env`
-2. Generates Context Surface models from the domain schema
-3. Generates synthetic data (JSONL files)
-4. Flushes Redis database
-5. Creates a new Context Surface (writes `CTX_SURFACE_ID` + `MCP_AGENT_KEY` to `.env`)
-6. Loads data into Redis (creates search indexes)
-7. Seeds Agent Memory (clears existing, seeds 2 long-term memories per domain)
-8. Seeds LangCache (flushes cache, seeds 1 cached response per domain)
-9. Semantic Routing initializes automatically when the server starts
+`make reset`은 4~9단계만 실행합니다. 기존 모델과 데이터 파일을 재사용하므로 더 빠릅니다.
 
-`make reset` does steps 4-9 only (faster — reuses existing models and data files).
+## 새 도메인 만들기
 
-## Creating a New Domain
+통신, 여행, 보험 등 새로운 산업 분야를 추가할 수 있습니다. 모든 도메인은 같은 구조를 따르므로 동일한 절차를 반복할 수 있습니다.
 
-Adding a new vertical (e.g., telecom, travel, insurance). Every domain follows the same structure, so the process is repeatable.
+### 만들어야 할 파일
 
-### What you need to create
+| 파일 | 내용 |
+|------|------|
+| `domains/<id>/schema.py` | 고객, 주문, 제품 등 Redis 데이터 엔터티 |
+| `domains/<id>/domain.py` | 브랜딩, 테마, 가드레일 라우트, 초기 메모리 및 캐시를 정의하는 매니페스트 |
+| `domains/<id>/prompt.py` | 도구 사용 안내와 워크플로를 포함한 에이전트 시스템 프롬프트 |
+| `domains/<id>/data_generator.py` | 현실적인 이름, 금액, 시나리오를 포함한 합성 데모 데이터 |
+| `domains/<id>/assets/logo.svg` | 도메인 로고 (상단 바에서 28×28 크기로 표시) |
+| `domains/<id>/docs/demo_paths.md` | 미리 작성한 데모 대화 시나리오 2~4개 |
+| `frontend/public/backgrounds/<id>/left.svg` | 시작 화면의 왼쪽 일러스트 (약 590×817, 35KB 미만) |
+| `frontend/public/backgrounds/<id>/right.svg` | 시작 화면의 오른쪽 일러스트 (약 632×817, 35KB 미만) |
 
-| File | What goes in it |
-|------|----------------|
-| `domains/<id>/schema.py` | Redis data entities (customers, orders, products, etc.) |
-| `domains/<id>/domain.py` | Manifest: branding, theme, guardrail routes, seed memories, seed cache |
-| `domains/<id>/prompt.py` | Agent system prompt with tool hints and workflows |
-| `domains/<id>/data_generator.py` | Synthetic demo data (realistic names, amounts, scenarios) |
-| `domains/<id>/assets/logo.svg` | Domain logo (renders at 28x28 in the topbar) |
-| `domains/<id>/docs/demo_paths.md` | 2-4 scripted demo conversation paths |
-| `frontend/public/backgrounds/<id>/left.svg` | Landing page left illustration (~590x817, <35KB) |
-| `frontend/public/backgrounds/<id>/right.svg` | Landing page right illustration (~632x817, <35KB) |
+각 도메인은 `backend/app/core/domain_contract.py`에 정의된 `DomainPack` 프로토콜을 구현합니다.
 
-Each domain implements the `DomainPack` protocol defined in `backend/app/core/domain_contract.py`.
+### AI로 도메인 만들기
 
-### Using AI to create a domain
-
-The fastest way to create a new vertical is with an AI coding assistant. Detailed authoring skills are available for both:
+새로운 산업 분야의 데모는 AI 코딩 어시스턴트로 빠르게 만들 수 있습니다. 두 도구 모두 상세한 작성 스킬을 제공합니다.
 
 - **Claude Code**: `.claude/skills/domain-pack-authoring.md`
 - **Codex**: `.codex/skills/domain-pack-authoring/SKILL.md`
 
-Just ask: *"Create a new domain for [your vertical]"* — the skill guides the agent through the full process: entity design, branding, realistic guardrail routes, seed data, prompts, and demo scenarios.
+*“[원하는 산업 분야]의 새 도메인을 만들어 줘”*라고 요청하세요. 스킬은 엔터티 설계, 브랜딩, 현실적인 가드레일 라우트, 초기 데이터, 프롬프트, 데모 시나리오까지 전체 과정을 안내합니다.
 
-## Project Structure
+## 프로젝트 구조
 
-```
+```text
 backend/
   app/
-    main.py                  # FastAPI app, SSE streaming, 7-phase pipeline
-    langgraph_agent.py       # LangGraph ReAct agent
-    memory_service.py        # Redis Agent Memory client
-    context_surface_service.py  # MCP tool wrapper
-    guardrail_service.py     # Semantic routing guardrail
-    langcache_service.py     # Semantic cache client
+    main.py                  # FastAPI 앱, SSE 스트리밍, 7단계 파이프라인
+    langgraph_agent.py       # LangGraph ReAct 에이전트
+    memory_service.py        # Redis Agent Memory 클라이언트
+    context_surface_service.py  # MCP 도구 래퍼
+    guardrail_service.py     # Semantic Routing 가드레일
+    langcache_service.py     # 시맨틱 캐시 클라이언트
     settings.py              # Pydantic BaseSettings
     core/
-      domain_contract.py     # DomainPack protocol + configs
-      domain_schema.py       # EntitySpec definition
+      domain_contract.py     # DomainPack 프로토콜 및 설정
+      domain_schema.py       # EntitySpec 정의
 
 domains/
-  reddash/                   # Food delivery
-  electrohub/                # Electronics retail
-  finance-researcher/        # Financial research
-  healthcare/                # Patient portal
-  radish-bank/               # Retail banking
-  rmobile/                   # Wireless telecom
-  sports-betting/            # Sports betting
+  reddash/                   # 음식 배달
+  electrohub/                # 전자제품 유통
+  finance-researcher/        # 금융 리서치
+  healthcare/                # 환자 포털
+  radish-bank/               # 소매 금융
+  rmobile/                   # 이동통신
+  sports-betting/            # 스포츠 베팅
 
 frontend/
   src/
-    App.tsx                  # React chat UI, SSE handler
+    App.tsx                  # React 채팅 UI, SSE 처리기
     components/              # ConversationView, ActivityPanel, EmptyState
 
-scripts/                     # Setup, data loading, seeding, validation
+scripts/                     # 설정, 데이터 적재, 초기 데이터 등록, 검증
 
 .codex/skills/
-  domain-pack-authoring/     # AI skill for creating new domains
+  domain-pack-authoring/     # 새 도메인을 만드는 AI 스킬
 ```
 
-## Make Targets
+## Make 명령어
 
-| Target | What it does |
-|--------|-------------|
-| `make domains` | List available domains |
-| `make setup [DOMAIN=X]` | Full setup: models, data, Redis, seed |
-| `make reset` | Reload current domain into Redis + re-seed |
-| `make dev` | Start backend (:8040) + frontend (:3040) |
-| `make install` | Install Python + JS dependencies |
-| `make create-domain DOMAIN=X` | Scaffold a new domain |
-| `make seed-memories` | Re-seed long-term memories for current domain |
-| `make seed-langcache` | Re-seed LangCache entries for current domain |
-| `make flush-redis` | Wipe Redis database |
+| 명령어 | 역할 |
+|--------|------|
+| `make domains` | 사용 가능한 도메인 목록 표시 |
+| `make setup [DOMAIN=X]` | 모델, 데이터, Redis 적재, 초기 데이터 등록을 포함한 전체 설정 |
+| `make reset` | 현재 도메인의 데이터를 Redis에 재적재하고 초기 데이터 재등록 |
+| `make dev` | 백엔드(:8040)와 프런트엔드(:3040) 시작 |
+| `make install` | Python 및 JS 의존성 설치 |
+| `make create-domain DOMAIN=X` | 새 도메인의 기본 구조 생성 |
+| `make seed-memories` | 현재 도메인의 장기 메모리 재등록 |
+| `make seed-langcache` | 현재 도메인의 LangCache 항목 재등록 |
+| `make flush-redis` | Redis 데이터베이스의 데이터 모두 삭제 |
 
-All targets read `DEMO_DOMAIN` from `.env` — no need to pass `DOMAIN=` unless switching.
+모든 명령어는 `.env`에서 `DEMO_DOMAIN`을 읽습니다. 도메인을 바꾸는 경우가 아니라면 `DOMAIN=`을 전달할 필요가 없습니다.
 
 ---
 
-## License
+## 라이선스
 
 MIT
